@@ -1,21 +1,27 @@
 #https://leetcode.com/explore/interview/card/top-interview-questions-medium/111/dynamic-programming/810/
-#Time: O(n^2)
+#Time: O(nlogn)
 #Space: O(n)
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
-        if not nums:
-            return 0
+        dp = []
         
-        dp = [1] * len(nums) # if length 1, at least the ans is 1
-        maxans = 1
+        if len(nums) <= 1: #if the nums' length is less than or equal to 1, just return the nums' length
+            return len(nums)
         
-        for i in range(1, len(dp)):
-            for j in range(0, i):
-                if nums[j] < nums[i]:
-                    dp[i] = max(dp[j] + 1, dp[i])
-                    
-            maxans = max(maxans, dp[i])
-        
-        return maxans
-
-# THERE IS A NLOGN SOLUTION WHICH I CANNOT UNDERSTAND
+        dp.append(nums[0]) #append first num
+        for num in nums:
+            if num > dp[-1]: #if num is bigger than last element of dp, append num
+                dp.append(num)
+            else: #if not, binary search the dp for the smallest number that is larger than num, and change that number to num
+                  #this keeps the 
+                l = 0
+                r = len(dp) - 1
+                while l < r:
+                    mid = l + ((r - l) // 2)
+                    if dp[mid] < num:
+                        l = mid + 1
+                    elif dp[mid] >= num:
+                        r = mid
+                dp[r] = num
+                
+        return len(dp)

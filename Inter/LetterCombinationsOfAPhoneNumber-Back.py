@@ -24,5 +24,5 @@ class Solution:
             ans.append(combi)
         else:
             curr = self.phone[digits[0]]
-            for i in range(len(curr)):
-                self.backtrack(combi + curr[i], digits[1:], ans)
+            for char in curr:
+                self.backtrack(combi + char, digits[1:], ans)
