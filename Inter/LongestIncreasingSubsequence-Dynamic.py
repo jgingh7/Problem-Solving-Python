@@ -13,7 +13,8 @@ class Solution:
             if num > dp[-1]: #if num is bigger than last element of dp, append num
                 dp.append(num)
             else: #if not, binary search the dp for the smallest number that is larger than num, and change that number to num
-                  #this keeps the 
+                  #this keeps the future subsequence to be able to append with smaller number
+                  #which makes it possible for longer subsequence to be made, if exists
                 l = 0
                 r = len(dp) - 1
                 while l < r:
