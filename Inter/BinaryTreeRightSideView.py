@@ -8,25 +8,36 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
+
+from collections import deque
+
 class Solution:
     def rightSideView(self, root: TreeNode) -> List[int]:
-        from collections import deque 
+        # level traverse
+        # print the last one before going to another level
+        if not root:
+            return []
         
+        queue = deque()
+        nextQueue = deque()
+        queue.append(root)
         ans = []
-        if root:
-            nextLevel = deque() 
-            nextLevel.append(root)
-            while nextLevel:
-                currLevel = nextLevel
-                nextLevel = deque()
-                while currLevel:
-                    curr = currLevel.popleft()
-                    if not currLevel:
-                        ans.append(curr.val)
-                    if curr.left:
-                        nextLevel.append(curr.left)
-                    if curr.right:
-                        nextLevel.append(curr.right)
-
-
+        
+        while queue:
+            curr = None
+            while queue:
+                curr = queue.popleft()
+                if curr.left:
+                    nextQueue.append(curr.left)
+                if curr.right:
+                    nextQueue.append(curr.right)
+                
+            ans.append(curr.val)
+                            
+            if nextQueue:
+                queue = nextQueue
+                nextQueue = deque()
+            else:
+                break
+                
         return ans

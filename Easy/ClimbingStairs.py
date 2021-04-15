@@ -2,22 +2,19 @@
 # Time: O(n + 1)
 # Space: O(n + 1)
 
+
 class Solution:
     def climbStairs(self, n: int) -> int:
-        if n == 1:
-            return 1
+        if n <= 3:
+            return n
         
         dp = [None] * (n + 1) #make n + 1 of them because you want to have a value for dp[n]
+        dp[0] = dp[1] = 1
         
-        for i in range(n + 1):
-            if i == 0:
-                dp[i] = 1
-            elif i == 1:
-                dp[i] = 1
-            else:
-                dp[i] = dp[i - 1] + dp[i - 2]
-                
-        return dp[n]
+        for i in range(2, n + 1):
+            dp[i] = dp[i - 1] + dp[i - 2]
+        
+        return dp[-1]
 
 
 # if 1

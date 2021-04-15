@@ -1,4 +1,4 @@
-#https://leetcode.com/explore/interview/card/top-interview-questions-medium/111/dynamic-programming/807/
+#https://leetcode.com/problems/jump-game/
 #Time: O(n)
 #Space: O(1)
 

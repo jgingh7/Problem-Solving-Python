@@ -1,4 +1,4 @@
-#https://leetcode.com/explore/interview/card/top-interview-questions-medium/108/trees-and-graphs/786/
+#https://leetcode.com/problems/set-matrix-zeroes/
 #Time: O(mn)
 #Space: O(1)
 
@@ -7,30 +7,52 @@ class Solution:
         """
         Do not return anything, modify matrix in-place instead.
         """
-        colLen = len(matrix)
-        rowLen = len(matrix[0])
-        rowOneisZero = False
-        for element in matrix[0]:
-            if element == 0:
-                rowOneisZero = True
-                
-        for i in range(1, colLen):
-            for j in range(rowLen):
+        maxRowIdx = len(matrix)
+        maxColIdx = len(matrix[0])
+        
+        # 1.
+        # check if the first row has zero
+        firstRowHasZero = False
+        for j in range(0, maxColIdx):
+            if matrix[0][j] == 0:
+                firstRowHasZero = True
+        
+        # check if the first column has zero
+        firstColHasZero = False
+        for i in range(0, maxRowIdx):
+            if matrix[i][0] == 0:
+                firstColHasZero = True
+        
+        # 2. 
+        # just for the values other than the first row and column,
+        # check the value, and if 0, use the first row and column as flag and set the as 0
+        for i in range(1, maxRowIdx):
+            for j in range(1, maxColIdx):
                 if matrix[i][j] == 0:
                     matrix[0][j] = 0
-                    matrix[i][0] = 0
-        
-        for i in range(1, colLen):
+                    matrix[i][0] = 0        
+                
+        # 3.
+        # check the first column for 0s and if 0, make all values in that row as 0
+        for i in range(1, maxRowIdx):
             if matrix[i][0] == 0:
-                for j in range(rowLen):
+                for j in range(1, maxColIdx):
                     matrix[i][j] = 0
                     
-        for j in range(rowLen):
+        # check the first row for 0s and if 0, make all values in that column as 0
+        for j in range(1, maxColIdx):
             if matrix[0][j] == 0:
-                for i in range(colLen):
+                for i in range(1, maxRowIdx):
                     matrix[i][j] = 0
         
-        if rowOneisZero:
-            for j in range(rowLen):
+        # 4.
+        # if the first row has 0, make all the values in the first row as 0
+        if firstRowHasZero:
+            for j in range(0, maxColIdx):
                 matrix[0][j] = 0
+                
+        # if the first column has 0, make all the values in the first column as 0
+        if firstColHasZero:
+            for i in range(0, maxRowIdx):
+                matrix[i][0] = 0
                     

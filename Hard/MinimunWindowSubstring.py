@@ -1,4 +1,9 @@
-# https://leetcode.com/problems/minimum-window-substring/
+# https://leetcode.com/problems/minimum-window-substring/solution/
+# Time: O(S + T)
+# Space: O(S + T)
+
+from collections import Counter
+
 
 class Solution:
     def minWindow(self, s: str, t: str) -> str:
@@ -12,45 +17,42 @@ class Solution:
 
         tCounter = Counter(t)
 
-        required = len(tCounter)
-
-        # Filter all the characters from s into a new list along with their index.
-        # The filtering criteria is that the character should be present in t.
-        filteredS = []
-        for i, char in enumerate(s):
-            if char in tCounter:
-                filteredS.append((i, char))
-
-        lFS, rFS = 0, 0
-        formed = 0
+        l = formedCharCount = 0
+        requiredCharCount = len(tCounter)
         windowCounts = {}
 
-        ans = (float("inf"), None, None)
+        impossibleLenOfSub = len(s) + 1
+        ans = (impossibleLenOfSub, None, None)
 
-        # Look for the characters only in the filtered list instead of entire s. This helps to reduce our search.
-        # Hence, we follow the sliding window approach on as small list.
-        while rFS < len(filteredS):
-            character = filteredS[rFS][1]
-            windowCounts[character] = windowCounts.get(character, 0) + 1
+        for r, charR in enumerate(s):
+            windowCounts[charR] = windowCounts.get(charR, 0) + 1
 
-            if windowCounts[character] == tCounter[character]:
-                formed += 1 #fully formed when fromed == required
+            # increment only when the charR's count in the window is the same as string t's count
+            if windowCounts[charR] == tCounter[charR]:
+                formedCharCount += 1
 
-            # If the current fliter window has or more of the required frequency of each characters check for the length of the original window
-            while formed == required:
-                character = filteredS[lFS][1]
+            # the right above "if" statement makes the instance to enter while loop only when
+            # 1. the window's character counts are exactly the same as string t's character counts
+            # 2. or when one or more character's count in the window is more than character's count in string t
+            while formedCharCount == requiredCharCount:
 
-                # Save the smallest original window until now.
-                start = filteredS[lFS][0]
-                end = filteredS[rFS][0]
-                if end - start + 1 < ans[0]:
-                    ans = (end - start + 1, start, end)
+                # Save the smallest window until checking through current index r
+                currWindLen = r - l + 1
+                if currWindLen < ans[0]:
+                    ans = (currWindLen, l, r)
 
-                windowCounts[character] -= 1
-                if windowCounts[character] < tCounter[character]:
-                    #if more still formed, but if less, take decrement 1, because not formed yet
-                    formed -= 1
-                lFS += 1    
+                # take the leftmost char out, decreasing the window size
+                charL = s[l]
+                windowCounts[charL] -= 1
+                l += 1
 
-            rFS += 1    
-        return "" if ans[0] == float("inf") else s[ans[1] : ans[2] + 1]
+                # After taking a char out from the left, check if formedCharCount should change.
+                # If count of charL is larger or equal, do not change formedCharCount
+                # so that we can keep the inner while loop working to get a smaller window substring, before increasing index r.
+                # If formedCharCount should change, it means we need to further increase index r to further check string s
+                # to find the character that can make a window with all characters in string t.
+                # Therefore so we break out of inner while loop by decrementing foremdCharCount
+                if windowCounts[charL] < tCounter[charL]:
+                    formedCharCount -= 1
+
+        return "" if ans[0] == impossibleLenOfSub else s[ans[1]: ans[2] + 1]

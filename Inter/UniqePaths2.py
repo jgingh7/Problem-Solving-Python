@@ -20,4 +20,4 @@ class Solution:
                 else:
                     obstacleGrid[i][j] = obstacleGrid[i - 1][j] + obstacleGrid[i][j - 1]
                     
-        return(obstacleGrid[-1][-1])
+        return obstacleGrid[-1][-1]

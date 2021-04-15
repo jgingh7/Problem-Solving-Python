@@ -2,6 +2,8 @@
 # Time: O(number of nodes)
 # Space: O(number of nodes)
 
+from collections import deque
+
 # Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
@@ -12,11 +14,27 @@ class Solution:
     def levelOrder(self, root: TreeNode) -> List[List[int]]:
         if not root:
             return []
-        ans, level = [], [root]
-        while level: #if current leaves have non-null leaves
-            ans.append([node.val for node in level]) # add list of current level's leaves' values to ans
-            temp = []
-            for node in level:
-                temp.extend([node.left, node.right]) # list with all next level leaves (even null leaves)
-            level = [leaf for leaf in temp if leaf] # list with non-null next level leaves
+        
+        queue = deque()
+        nextQueue = deque()
+        ans = []
+        queue.append(root)
+        
+        while True:
+            currArr = []
+            while queue:
+                curr = queue.popleft()
+                currArr.append(curr.val) #append curr val to currArr and append its left and right to nextQueue
+                if curr.left:
+                    nextQueue.append(curr.left)
+                if curr.right:
+                    nextQueue.append(curr.right)
+
+            ans.append(currArr) #append currArr
+            if nextQueue: #reset queue
+                queue = nextQueue
+                nextQueue = deque()
+            else: #if there is no nextQueue, break
+                break
+                
         return ans

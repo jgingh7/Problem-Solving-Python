@@ -8,10 +8,10 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
+from collections import deque
+
 class Solution:
     def zigzagLevelOrder(self, root: TreeNode) -> List[List[int]]:
-        from collections import deque
- 
         if not root:
             return []
         
@@ -22,27 +22,24 @@ class Solution:
         ans = []
         while LtoR or RtoL:
             ansPart = []
-            while LtoR:
-                curr = LtoR.pop()
-                ansPart.append(curr.val)
-                if curr.left:
-                    RtoL.append(curr.left)
-                if curr.right:
-                    RtoL.append(curr.right)
-            if ansPart:
-                ans.append(ansPart)
-
-                
-            ansPart = []
-            while RtoL:
-                curr = RtoL.pop()
-                ansPart.append(curr.val)
-                if curr.right:
-                    LtoR.append(curr.right)
-                if curr.left:
-                    LtoR.append(curr.left)
-            if ansPart:
-                ans.append(ansPart)
-               
-               
+            
+            if LtoR:
+                while LtoR:
+                    curr = LtoR.pop()
+                    ansPart.append(curr.val)
+                    if curr.left:
+                        RtoL.append(curr.left)
+                    if curr.right:
+                        RtoL.append(curr.right)     
+            else:
+                while RtoL:
+                    curr = RtoL.pop()
+                    ansPart.append(curr.val)
+                    if curr.right:
+                        LtoR.append(curr.right)
+                    if curr.left:
+                        LtoR.append(curr.left)        
+                        
+            ans.append(ansPart)
+                        
         return ans

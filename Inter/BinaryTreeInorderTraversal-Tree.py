@@ -1,4 +1,4 @@
-#https://leetcode.com/problems/binary-tree-inorder-traversal/solution/
+#https://leetcode.com/problems/binary-tree-inorder-traversal/
 #Time: O(n)
 #Space: O(n), it will be O(1) if not count the ans
 

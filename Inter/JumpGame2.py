@@ -4,10 +4,12 @@ class Solution: #BFS solution #for every while iteration, check all the elements
                                                          # to get the next end as the maximum possible reachable position
                                                          # and start and 1 above current end.   
     def jump(self, nums: List[int]) -> int:
-        lastIdx, start, end, step = len(nums) - 1, 0, 0, 0
+        lastIdx = len(nums) - 1
+        start = end = step = 0
+        
         while end < lastIdx:
             step += 1
-            nextEnd = end + 1
+            nextEnd = end # "nextEnd = end + 1" is also possible becasue it is assumed that the last idx can be reached
             for i in range (start, end + 1):
                 if i + nums[i] >= lastIdx:
                     return step

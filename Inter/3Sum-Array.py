@@ -1,33 +1,36 @@
 #https://leetcode.com/explore/interview/card/top-interview-questions-medium/103/array-and-strings/776/
 #Time: O(n^2)
-#Space: O(n) - dictionary
+#Space: O(len(nums) C 3) - if count the ans
 
 class Solution:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
         numsLen = len(nums)
         if numsLen < 3:
             return []
-            
-        ans = set()
         
+        ans = []
         nums.sort()
+        
         for i in range(numsLen - 2):
-            l = i + 1
-            r = numsLen - 1
+            if i > 0 and nums[i] == nums[i - 1]: # skip same numbers
+                continue
+            l, r = i + 1, numsLen - 1
             while l < r:
-                sum = nums[i] + nums[l] + nums[r]
-                if sum == 0:
-                    ans.add((nums[i], nums[l], nums[r]))
-                    l += 1
+                s = nums[i] + nums[l] + nums[r]
+                if s < 0:
+                    l += 1 
+                elif s > 0:
                     r -= 1
-                elif sum < 0:
-                    l += 1
                 else:
+                    ans.append((nums[i], nums[l], nums[r]))
+                    while l < r and nums[l] == nums[l + 1]: # skip same numbers
+                        l += 1
+                    while l < r and nums[r] == nums[r - 1]: # skip same numbers
+                        r -= 1
+                    l += 1
                     r -= 1
                     
-        ans = list(ans)
         for i in range(len(ans)):
             ans[i] = list(ans[i])
-
-        return ans
-        
+            
+        return ans   

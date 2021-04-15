@@ -1,11 +1,11 @@
-#https://leetcode.com/explore/interview/card/top-interview-questions-medium/109/backtracking/796/
+#https://leetcode.com/problems/subsets/
 #Time: O(n * 2^n)
 #Space: O(n * 2^n)
 
 class Solution:
     def subsets(self, nums: List[int]) -> List[List[int]]:
         ans = []
-        self.backtrack(sorted(nums), 0, [], ans)
+        self.backtrack(nums, 0, [], ans)
         return ans
     
     def backtrack(self, nums: List[int], start: int, path: List[int], ans: List[List[int]]):

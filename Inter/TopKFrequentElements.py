@@ -1,21 +1,22 @@
 #https://leetcode.com/explore/interview/card/top-interview-questions-medium/110/sorting-and-searching/799/
-#Time: O(n)
+#Time: O(n log n)
 #Space: O(n)
+
+from collections import Counter
+import heapq
 
 class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
-        # O(1) time 
-        if k == len(nums):
-            return nums
+        counter = Counter(nums)
+              
+        counterTup = []
+        for key, val in counter.items():
+            counterTup.append((val, key))
         
-        # 1. build hash map : character and how often it appears
-        # O(N) time
-        count = Counter(nums)   
-        # 2-3. build heap of top k frequent elements and
-        # convert it into an output array
-        # O(N log k) time
-        return nlargest(k, count.keys(), key = count.get)
-        # Return a list with the n largest elements from the dataset defined by iterable.
-        # nlargest(k, iterable, key = fun) :- This function is used to return the k largest elements from the iterable specified and satisfying the key if mentioned.
-        # count.get is the value
-
+        heapq._heapify_max(counterTup)
+        
+        ans = []
+        for i in range(k):
+            ans.append(heapq._heappop_max(counterTup)[1])
+            
+        return ans
